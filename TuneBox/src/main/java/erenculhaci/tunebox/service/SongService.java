@@ -1,13 +1,8 @@
 package erenculhaci.tunebox.service;
 
 import erenculhaci.tunebox.dto.SongDTO;
-import erenculhaci.tunebox.entity.Album;
-import erenculhaci.tunebox.entity.Genre;
-import erenculhaci.tunebox.entity.Song;
-import erenculhaci.tunebox.repository.AlbumRepository;
-import erenculhaci.tunebox.repository.GenreRepository;
-import erenculhaci.tunebox.repository.PlaylistRepository;
-import erenculhaci.tunebox.repository.SongRepository;
+import erenculhaci.tunebox.entity.*;
+import erenculhaci.tunebox.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,14 +23,17 @@ public class SongService {
 
         List<Genre> genres = genreRepository.findAllById(songDTO.getGenreIds());
 
+        Artist artist = album.getArtist();
+
         Song song = Song.builder()
                 .title(songDTO.getTitle())
                 .duration(songDTO.getDuration())
                 .album(album)
                 .genres(genres)
+                .artist(artist)
                 .build();
 
-        song = songRepository.save(song);
+        songRepository.save(song);
 
         return true;
     }
@@ -46,13 +44,19 @@ public class SongService {
         return convertToDTO(song);
     }
 
+    public SongDTO getSongByTitle(String title) {
+        Song song = songRepository.findByTitleIgnoreCase(title)
+                .orElseThrow(() -> new IllegalArgumentException("Song not found"));
+        return convertToDTO(song);
+    }
+
     public List<SongDTO> getAllSongs() {
         return songRepository.findAll().stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<SongDTO> getAllSongsByGenre(Long genreId) {
+    public List<SongDTO> getAllSongsByGenreId(Long genreId) {
         Genre genre = genreRepository.findById(genreId)
                 .orElseThrow(() -> new IllegalArgumentException("Genre not found"));
         return songRepository.findAllByGenresContains(genre).stream()
@@ -60,7 +64,7 @@ public class SongService {
                 .collect(Collectors.toList());
     }
 
-    public List<SongDTO> getAllSongsByAlbum(Long albumId) {
+    public List<SongDTO> getAllSongsByAlbumId(Long albumId) {
         Album album = albumRepository.findById(albumId)
                 .orElseThrow(() -> new IllegalArgumentException("Album not found"));
         return songRepository.findAllByAlbum(album).stream()
@@ -68,12 +72,40 @@ public class SongService {
                 .collect(Collectors.toList());
     }
 
-    public List<SongDTO> getAllSongsByPlaylist(Long playlistId) {
+    public List<SongDTO> getAllSongsByPlaylistId(Long playlistId) {
         return playlistRepository.findById(playlistId)
                 .orElseThrow(() -> new IllegalArgumentException("Playlist not found"))
                 .getSongs().stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
+    }
+
+    public SongDTO getRandomSongByGenreName(String genreName) {
+        Genre genre = genreRepository.findByNameIgnoreCase(genreName)
+                .orElseThrow(() -> new IllegalArgumentException("Genre not found"));
+        List<Song> songs = songRepository.findAllByGenresContains(genre);
+        if(songs.isEmpty()) {
+            throw new IllegalArgumentException("No songs found for genre");
+        }
+        return convertToDTO(songs.get((int) (Math.random() * songs.size())));
+    }
+
+    public SongDTO getRandomSongByPlaylistName(String playlistName) {
+        Playlist playlist = playlistRepository.findByName(playlistName)
+                .orElseThrow(() -> new IllegalArgumentException("Playlist not found"));
+        return convertToDTO(playlist.getSongs().get((int) (Math.random() * playlist.getSongs().size())));
+    }
+
+    public SongDTO getRandomSongByAlbumTitle(String albumTitle) {
+        List<Album> albums = albumRepository.findAllByTitle(albumTitle);
+        if(albums.isEmpty()) {
+            throw new IllegalArgumentException("No albums found with title");
+        }
+        List<Song> songs = songRepository.findAllByAlbum(albums.get(0));
+        if(songs.isEmpty()) {
+            throw new IllegalArgumentException("No songs found for album");
+        }
+        return convertToDTO(songs.get((int) (Math.random() * songs.size())));
     }
 
     public Boolean updateSong(Long id, SongDTO songDTO) {
@@ -90,7 +122,7 @@ public class SongService {
         song.setAlbum(album);
         song.setGenres(genres);
 
-        song = songRepository.save(song);
+        songRepository.save(song);
 
         return true;
     }
@@ -105,6 +137,7 @@ public class SongService {
                 .duration(song.getDuration())
                 .albumId(song.getAlbum().getId())
                 .genreIds(song.getGenres().stream().map(Genre::getId).collect(Collectors.toList()))
+                .artistId(song.getArtist().getId())
                 .build();
     }
 }

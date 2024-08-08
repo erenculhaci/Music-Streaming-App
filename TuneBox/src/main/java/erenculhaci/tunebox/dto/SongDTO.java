@@ -13,4 +13,5 @@ public class SongDTO {
     private int duration;
     private Long albumId;
     private List<Long> genreIds;
+    private Long artistId;
 }

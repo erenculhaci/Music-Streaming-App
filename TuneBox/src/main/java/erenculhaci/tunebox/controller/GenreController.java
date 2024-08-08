@@ -33,6 +33,24 @@ public class GenreController {
         return new ResponseEntity<>(genreDTOList, HttpStatus.OK);
     }
 
+    @GetMapping("/getGenreByName")
+    public ResponseEntity<GenreDTO> getGenreByName(@RequestParam String name) {
+        GenreDTO genreDTO = genreService.getGenreByName(name);
+        return new ResponseEntity<>(genreDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/getGenresBySongId")
+    public ResponseEntity<List<GenreDTO>> getGenresBySongId(@RequestParam Long id) {
+        List<GenreDTO> genreDTOList = genreService.getGenresBySongId(id);
+        return new ResponseEntity<>(genreDTOList, HttpStatus.OK);
+    }
+
+    @GetMapping("/getGenresBySongTitle")
+    public ResponseEntity<List<GenreDTO>> getGenresBySongTitle(@RequestParam String title) {
+        List<GenreDTO> genreDTOList = genreService.getGenresBySongTitle(title);
+        return new ResponseEntity<>(genreDTOList, HttpStatus.OK);
+    }
+
     @PutMapping("/updateGenre")
     public ResponseEntity<Boolean> updateGenre(@RequestParam Long id, @RequestBody GenreDTO genreDTO) {
         Boolean updated = genreService.updateGenre(id, genreDTO);

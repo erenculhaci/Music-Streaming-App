@@ -33,22 +33,46 @@ public class SongController {
         return new ResponseEntity<>(songDTOs, HttpStatus.OK);
     }
 
-    @GetMapping("/getAllSongsByGenre")
-    public ResponseEntity<List<SongDTO>> getAllSongsByGenre(@RequestParam Long genreId) {
-        List<SongDTO> songDTOs = songService.getAllSongsByGenre(genreId);
+    @GetMapping("/getSongByTitle")
+    public ResponseEntity<SongDTO> getSongByTitle(@RequestParam String title) {
+        SongDTO songDTO = songService.getSongByTitle(title);
+        return new ResponseEntity<>(songDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllSongsByGenreId")
+    public ResponseEntity<List<SongDTO>> getAllSongsByGenreId(@RequestParam Long genreId) {
+        List<SongDTO> songDTOs = songService.getAllSongsByGenreId(genreId);
         return new ResponseEntity<>(songDTOs, HttpStatus.OK);
     }
 
-    @GetMapping("/getAllSongsByAlbum")
-    public ResponseEntity<List<SongDTO>> getAllSongsByAlbum(@RequestParam Long albumId) {
-        List<SongDTO> songDTOs = songService.getAllSongsByAlbum(albumId);
+    @GetMapping("/getAllSongsByAlbumId")
+    public ResponseEntity<List<SongDTO>> getAllSongsByAlbumId(@RequestParam Long albumId) {
+        List<SongDTO> songDTOs = songService.getAllSongsByAlbumId(albumId);
         return new ResponseEntity<>(songDTOs, HttpStatus.OK);
     }
 
-    @GetMapping("/getAllSongsByPlaylist")
-    public ResponseEntity<List<SongDTO>> getAllSongsByPlaylist(@RequestParam Long playlistId) {
-        List<SongDTO> songDTOs = songService.getAllSongsByPlaylist(playlistId);
+    @GetMapping("/getAllSongsByPlaylistId")
+    public ResponseEntity<List<SongDTO>> getAllSongsByPlaylistId(@RequestParam Long playlistId) {
+        List<SongDTO> songDTOs = songService.getAllSongsByPlaylistId(playlistId);
         return new ResponseEntity<>(songDTOs, HttpStatus.OK);
+    }
+
+    @GetMapping("/getRandomSongByGenreName")
+    public ResponseEntity<SongDTO> getRandomSongByGenreName(@RequestParam String genreName) {
+        SongDTO songDTO = songService.getRandomSongByGenreName(genreName);
+        return new ResponseEntity<>(songDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/getRandomSongByPlaylistName")
+    public ResponseEntity<SongDTO> getRandomSongByPlaylistName(@RequestParam String playlistName) {
+        SongDTO songDTO = songService.getRandomSongByPlaylistName(playlistName);
+        return new ResponseEntity<>(songDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/getRandomSongByAlbumTitle")
+    public ResponseEntity<SongDTO> getRandomSongByAlbumName(@RequestParam String albumTitle) {
+        SongDTO songDTO = songService.getRandomSongByAlbumTitle(albumTitle);
+        return new ResponseEntity<>(songDTO, HttpStatus.OK);
     }
 
     @PutMapping("/updateSong")

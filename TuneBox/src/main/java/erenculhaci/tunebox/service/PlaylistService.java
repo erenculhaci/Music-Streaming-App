@@ -56,7 +56,26 @@ public class PlaylistService {
                 .collect(Collectors.toList());
     }
 
+    public List<PlaylistDTO> getPlaylistsByUsername(String username) {
+        List<Playlist> playlists = playlistRepository.findByUserUsername(username);
+        return playlists.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
 
+    public List<PlaylistDTO> getPlaylistsBySongId(Long songId) {
+        List<Playlist> playlists = playlistRepository.findBySongsId(songId);
+        return playlists.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<PlaylistDTO> getPlaylistsBySongTitle(String title) {
+        List<Playlist> playlists = playlistRepository.findBySongsTitle(title);
+        return playlists.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
 
     public Boolean updatePlaylist(Long id, PlaylistDTO playlistDTO) {
         Playlist playlist = playlistRepository.findById(id)

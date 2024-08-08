@@ -34,6 +34,24 @@ public class GenreService {
                 .collect(Collectors.toList());
     }
 
+    public GenreDTO getGenreByName(String name) {
+        Genre genre = genreRepository.findByNameIgnoreCase(name)
+                .orElseThrow(() -> new IllegalArgumentException("Genre not found"));
+        return convertToDTO(genre);
+    }
+
+    public List<GenreDTO> getGenresBySongId(Long id) {
+        return genreRepository.findBySongs_Id(id).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<GenreDTO> getGenresBySongTitle(String title) {
+        return genreRepository.findBySongs_TitleIgnoreCase(title).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     public Boolean updateGenre(Long id, GenreDTO genreDTO) {
         Genre genre = genreRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Genre not found"));

@@ -34,9 +34,21 @@ public class AlbumController {
         return new ResponseEntity<>(albums, HttpStatus.OK);
     }
 
-    @GetMapping("/getAlbumsByArtistName")
-    public ResponseEntity<List<AlbumDTO>> getAlbumsByArtistName(@RequestParam String name) {
-        List<AlbumDTO> albums = albumService.getAlbumsByArtistName(name);
+    @GetMapping("/getAlbumsByTitle")
+    public ResponseEntity<List<AlbumDTO>> getAlbumsByTitle(@RequestParam String title) {
+        List<AlbumDTO> albums = albumService.getAlbumsByTitle(title);
+        return new ResponseEntity<>(albums, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAlbumsByArtistNameAndSurname")
+    public ResponseEntity<List<AlbumDTO>> getAlbumsByArtistNameAndSurname(@RequestParam String name, @RequestParam String surname) {
+        List<AlbumDTO> albums = albumService.getAlbumsByArtistNameAndSurname(name, surname);
+        return new ResponseEntity<>(albums, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAlbumsByArtistId")
+    public ResponseEntity<List<AlbumDTO>> getAlbumsByArtistId(@RequestParam Long id) {
+        List<AlbumDTO> albums = albumService.getAlbumsByArtistId(id);
         return new ResponseEntity<>(albums, HttpStatus.OK);
     }
 

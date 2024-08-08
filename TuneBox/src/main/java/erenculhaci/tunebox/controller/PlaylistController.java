@@ -39,6 +39,24 @@ public class PlaylistController {
         return new ResponseEntity<>(playlistDTOList, HttpStatus.OK);
     }
 
+    @GetMapping("/getPlaylistsByUsername")
+    public ResponseEntity<List<PlaylistDTO>> getPlaylistsByUsername(@RequestParam String username) {
+        List<PlaylistDTO> playlistDTOList = playlistService.getPlaylistsByUsername(username);
+        return new ResponseEntity<>(playlistDTOList, HttpStatus.OK);
+    }
+
+    @GetMapping("/getPlaylistsBySongId")
+    public ResponseEntity<List<PlaylistDTO>> getPlaylistsBySongId(@RequestParam Long songId) {
+        List<PlaylistDTO> playlistDTOList = playlistService.getPlaylistsBySongId(songId);
+        return new ResponseEntity<>(playlistDTOList, HttpStatus.OK);
+    }
+
+    @GetMapping("/getPlaylistsBySongTitle")
+    public ResponseEntity<List<PlaylistDTO>> getPlaylistsBySongTitle(@RequestParam String songTitle) {
+        List<PlaylistDTO> playlistDTOList = playlistService.getPlaylistsBySongTitle(songTitle);
+        return new ResponseEntity<>(playlistDTOList, HttpStatus.OK);
+    }
+
     @PutMapping("/updatePlaylist")
     public ResponseEntity<Boolean> updatePlaylist(@RequestParam Long id, @RequestBody PlaylistDTO playlistDTO) {
         Boolean updated = playlistService.updatePlaylist(id, playlistDTO);

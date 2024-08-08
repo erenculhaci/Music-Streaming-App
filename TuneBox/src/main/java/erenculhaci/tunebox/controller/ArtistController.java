@@ -33,6 +33,16 @@ public class ArtistController {
         return new ResponseEntity<>(allArtists, HttpStatus.OK);
     }
 
+    // This method searches for artists by name and surname. You can give only name or surname as a parameter too.
+    // For example, if you give only name as a parameter, it will return all artists with that name.
+    // If you give both name and surname, it will return all artists with that name and surname.
+    // If you give only a part of the name or surname, it will return all artists containing that part in their name or surname.
+    @GetMapping("/getArtistsByNameAndSurname")
+    public ResponseEntity<List<ArtistDTO>> getArtistsByNameAndSurname(@RequestParam String name, @RequestParam String surname) {
+        List<ArtistDTO> artistsByName = artistService.getArtistsByNameAndSurname(name, surname);
+        return new ResponseEntity<>(artistsByName, HttpStatus.OK);
+    }
+
     @PutMapping("/updateArtist")
     public ResponseEntity<Boolean> updateArtist(@RequestParam Long id, @RequestBody ArtistDTO artistDTO) {
         Boolean updated = artistService.updateArtist(id, artistDTO);

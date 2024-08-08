@@ -1,6 +1,5 @@
 package erenculhaci.tunebox.service;
 
-import erenculhaci.tunebox.entity.Album;
 import erenculhaci.tunebox.dto.ArtistDTO;
 import erenculhaci.tunebox.entity.Artist;
 import erenculhaci.tunebox.repository.ArtistRepository;
@@ -31,6 +30,12 @@ public class ArtistService {
 
     public List<ArtistDTO> getAllArtists() {
         return artistRepository.findAll().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ArtistDTO> getArtistsByNameAndSurname(String name, String surname) {
+        return artistRepository.findAllByNameAndSurname(name, surname).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }

@@ -37,10 +37,25 @@ public class AlbumService {
                 .collect(Collectors.toList());
     }
 
-    public List<AlbumDTO> getAlbumsByArtistName(String name) {
-        List<Artist> artists = artistRepository.findAllByName(name);
+    public List<AlbumDTO> getAlbumsByTitle(String title) {
+        return albumRepository.findAllByTitleContainsIgnoreCase(title).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<AlbumDTO> getAlbumsByArtistNameAndSurname(String name, String surname) {
+        List<Artist> artists = artistRepository.findAllByNameAndSurname(name, surname);
         return albumRepository.findAll().stream()
                 .filter(album -> artists.contains(album.getArtist()))
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<AlbumDTO> getAlbumsByArtistId(Long id) {
+        Artist artist = artistRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Artist not found"));
+        return albumRepository.findAll().stream()
+                .filter(album -> album.getArtist().equals(artist))
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }

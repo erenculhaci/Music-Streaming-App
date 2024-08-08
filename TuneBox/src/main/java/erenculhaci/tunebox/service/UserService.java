@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final SubscriptionRepository subscriptionRepository;
 
     public Boolean createUser(UserDTO userDTO) {
         User user = modelMapper.map(userDTO, User.class);
@@ -27,6 +28,20 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         return convertToDTO(user);
+    }
+
+    public UserDTO getUserByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        return convertToDTO(user);
+    }
+
+    public List<UserDTO> getAllUsersBySubscription(String subscriptionType) {
+        List<Subscription> AllSubscriptionsByType = subscriptionRepository.findAllByType(subscriptionType);
+        return userRepository.findAllBySubscriptionIn(AllSubscriptionsByType).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
     }
 
     public List<UserDTO> getAllUsers() {

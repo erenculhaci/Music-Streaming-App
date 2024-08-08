@@ -27,6 +27,18 @@ public class UserController {
         return new ResponseEntity<>(userById, HttpStatus.OK);
     }
 
+    @GetMapping("/getUserByUsername")
+    public ResponseEntity<UserDTO> getUserByUsername(@RequestParam String username) {
+        UserDTO userByUsername = userService.getUserByUsername(username);
+        return new ResponseEntity<>(userByUsername, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllUsersBySubscription")
+    public ResponseEntity<List<UserDTO>> getAllUsersBySubscription(@RequestParam String subscriptionType) {
+        List<UserDTO> allUsersBySubscription = userService.getAllUsersBySubscription(subscriptionType);
+        return new ResponseEntity<>(allUsersBySubscription, HttpStatus.OK);
+    }
+
     @GetMapping("/getAllUsers")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<UserDTO> allUsers = userService.getAllUsers();
