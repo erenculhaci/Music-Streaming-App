@@ -118,6 +118,7 @@ Create a PostgreSQL database and update the application.properties file with you
 Once the application is running, you can access it via `http://localhost:8080`.
 
 You can send requests to this address via the Postman API I have created. There are multiple requests in this link.
+
 [<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/37480382-a0c7fbfb-e184-4433-8f26-3110bfb2b195?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D37480382-a0c7fbfb-e184-4433-8f26-3110bfb2b195%26entityType%3Dcollection%26workspaceId%3D6cb0f1c4-3882-469c-8920-a71b7297d86c)
 
 ## Acknowledgments
