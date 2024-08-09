@@ -1,8 +1,8 @@
-# Tunebox
+# TuneBox
 
 ## Introduction
 
-Welcome to the Tunebox! This project is a comprehensive music streaming service built using Java, Spring, and PostgreSQL. It’s designed to manage and stream music efficiently while adhering to SOLID principles and object-oriented design.
+Welcome to the TuneBox! This project is a comprehensive music streaming service built using Java, Spring, and PostgreSQL. It’s designed to manage and stream music efficiently while adhering to SOLID principles and object-oriented design.
 
 ## Features
 
