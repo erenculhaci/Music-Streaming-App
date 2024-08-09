@@ -7,6 +7,7 @@ Welcome to the TuneBox! This project is a comprehensive music streaming service 
 ## Features
 
 - **User Management**: Allows creating users, and updating or deleting their profiles.
+- **Artist Support**: Artists can create their profiles and have their albums and songs in the app.
 - **Music Library**: Manage and browse through a rich catalog with support for albums, artists, and genres.
 - **Playlists**: Users can create, update, and manage playlists.
 - **Subscriptions**: Supports different subscription plans.
