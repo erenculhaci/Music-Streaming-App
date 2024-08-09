@@ -68,7 +68,7 @@ The project is organized into several modules, each serving a specific purpose:
 
 - **Subscription**: Represents a user’s subscription plan with fields:
   - `id`: Unique identifier
-  - `type`: Type of subscription (e.g., Free, Premium)
+  - `type`: Type of subscription (e.g., Student, Premium)
   - `startDate`: Start date of the subscription
   - `endDate`: End date of the subscription
   - `user`: The user associated with the subscription (one-to-one relationship with `User`)
