@@ -7,6 +7,7 @@ import erenculhaci.tunebox.repository.SubscriptionRepository;
 import erenculhaci.tunebox.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,9 +19,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final SubscriptionRepository subscriptionRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public Boolean createUser(UserDTO userDTO) {
         User user = modelMapper.map(userDTO, User.class);
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         userRepository.save(user);
         return true;
     }
@@ -55,15 +58,15 @@ public class UserService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        if (!user.getPassword().equals(currentPassword)) {
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
             throw new IllegalArgumentException("Password is incorrect");
         }
 
         user.setUsername(userDTO.getUsername());
-        user.setPassword(userDTO.getPassword());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user.setEmail(userDTO.getEmail());
 
-        user = userRepository.save(user);
+        userRepository.save(user);
 
         return true;
     }
