@@ -1,5 +1,6 @@
 package erenculhaci.tunebox.service;
 import erenculhaci.tunebox.dto.UserDTO;
+import erenculhaci.tunebox.dto.UserResponseDTO;
 import erenculhaci.tunebox.entity.Subscription;
 import erenculhaci.tunebox.entity.User;
 import erenculhaci.tunebox.repository.SubscriptionRepository;
@@ -24,35 +25,39 @@ public class UserService {
         return true;
     }
 
-    public UserDTO getUserById(Long id) {
+    public UserResponseDTO getUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        return convertToDTO(user);
+        return convertToResponseDTO(user);
     }
 
-    public UserDTO getUserByUsername(String username) {
+    public UserResponseDTO getUserByUsername(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        return convertToDTO(user);
+        return convertToResponseDTO(user);
     }
 
-    public List<UserDTO> getAllUsersBySubscription(String subscriptionType) {
+    public List<UserResponseDTO> getAllUsersBySubscription(String subscriptionType) {
         List<Subscription> AllSubscriptionsByType = subscriptionRepository.findAllByType(subscriptionType);
         return userRepository.findAllBySubscriptionIn(AllSubscriptionsByType).stream()
-                .map(this::convertToDTO)
+                .map(this::convertToResponseDTO)
                 .collect(Collectors.toList());
 
     }
 
-    public List<UserDTO> getAllUsers() {
+    public List<UserResponseDTO> getAllUsers() {
         return userRepository.findAll().stream()
-                .map(this::convertToDTO)
+                .map(this::convertToResponseDTO)
                 .collect(Collectors.toList());
     }
 
-    public Boolean updateUser(Long id, UserDTO userDTO) {
-        User user = userRepository.findById(id)
+    public Boolean updateUser(String username, String currentPassword, UserDTO userDTO) {
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        if (!user.getPassword().equals(currentPassword)) {
+            throw new IllegalArgumentException("Password is incorrect");
+        }
 
         user.setUsername(userDTO.getUsername());
         user.setPassword(userDTO.getPassword());
@@ -67,10 +72,9 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    private UserDTO convertToDTO(User user) {
-        return UserDTO.builder()
+    private UserResponseDTO convertToResponseDTO(User user) {
+        return UserResponseDTO.builder()
                 .username(user.getUsername())
-                .password(user.getPassword())
                 .email(user.getEmail())
                 .build();
     }
